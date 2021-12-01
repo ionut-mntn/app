@@ -1,7 +1,5 @@
 package com.example.app.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -31,10 +29,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-//public class MainActivity extends AppCompatActivity {
-public class MainActivity extends AppCompatActivity implements ConversionListener { // fara asta
+public class MainActivity extends BaseActivity implements ConversionListener {
 
-    private ActivityMainBinding binding; // clasa asta e generata automat pt ca I've enabled viewBinding pt proiect!!
+    private ActivityMainBinding binding;
     private PreferenceManager preferenceManager;
     private List<ChatMessage> conversations;
     private RecentConversationsAdapter conversationsAdapter;
@@ -44,7 +41,6 @@ public class MainActivity extends AppCompatActivity implements ConversionListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-//        setContentView(R.layout.activity_main);
         setContentView(binding.getRoot());
         preferenceManager = new PreferenceManager(getApplicationContext());
         init();
@@ -57,7 +53,6 @@ public class MainActivity extends AppCompatActivity implements ConversionListene
     private void init() {
         conversations = new ArrayList<>();
         Log.d("ionut:", "trece!");
-//        conversationsAdapter = new RecentConversationsAdapter(conversations);
         conversationsAdapter = new RecentConversationsAdapter(conversations, this);
         Log.d("ionut:", "nu mai trece!");
         binding.conversationsRecyclerView.setAdapter(conversationsAdapter);
@@ -130,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements ConversionListene
             }
             Collections.sort(conversations, (obj1, obj2) -> obj2.dateObject.compareTo(obj1.dateObject));
             conversationsAdapter.notifyDataSetChanged();
-            binding.conversationsRecyclerView.smoothScrollToPosition(0); // scroll-ul automat !!
+            binding.conversationsRecyclerView.smoothScrollToPosition(0);
             binding.conversationsRecyclerView.setVisibility(View.VISIBLE);
             binding.progressBar.setVisibility(View.GONE);
         }
@@ -146,7 +141,6 @@ public class MainActivity extends AppCompatActivity implements ConversionListene
                 preferenceManager.getString(Constants.KEY_USER_ID)
         );
         documentReference.update(Constants.KEY_FCM_TOKEN, token)
-//                .addOnSuccessListener(unused -> showToast("Token updated successfully"))
                 .addOnFailureListener(e -> showToast("Unable to update token"));
     }
 
@@ -168,7 +162,6 @@ public class MainActivity extends AppCompatActivity implements ConversionListene
                 .addOnFailureListener(e -> showToast("Unable to sign out"));
     }
 
-    // fara asta toata de dedesubt
     @Override
     public void onConversionClicked(User user) {
         Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
